@@ -1,0 +1,152 @@
+CREATE TABLE tnaportal.master_materi (
+	id INT auto_increment NOT NULL PRIMARY KEY,
+	title varchar(250) NULL,
+	`desc` TEXT NULL,
+	`type` ENUM('video', 'pdf') NULL,
+	content_url TEXT NULL,
+	order_number INT NULL,
+	active_yn varchar(1) NULL,
+	created_at DATETIME NULL,
+	updated_at DATETIME NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+
+
+//kalo di incident belum ada id_lokasi dan id_sub_kategorinya
+ALTER TABLE tnaportal.incident ADD id_lokasi INT(11) NULL;
+ALTER TABLE tnaportal.incident ADD id_sub_kategori int(11) NULL;
+
+//tabel untun assets
+CREATE TABLE tnaportal.assets (
+	id_asset varchar(50) NOT NULL,
+	category varchar(100) NOT NULL,
+	id_user varchar(20) NOT NULL,
+	computer_name varchar(100) NULL,
+	manufacturing varchar(100) NULL,
+	device_model varchar(100) NULL,
+	serial_number varchar(100) NULL,
+	`year` varchar(4) NULL,
+	`desc` varchar(200) NULL,
+	os_name varchar(100) NULL,
+	status varchar(20) NULL,
+	location varchar(100) NULL,
+	priority varchar(20) NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+
+ALTER TABLE tnaportal.kategori ADD nama_menu varchar(100) NULL;
+
+
+//==> 2025.09.09 TABLE ORDER VEHICLE
+CREATE TABLE tnaportal.request_vehicle (
+	id_req varchar(100) NOT NULL,
+	user_req varchar(100) NULL,
+	target_dept varchar(100) NULL,
+	vehicle varchar(100) NULL,
+	driver_yn varchar(1) NULL,
+	`desc` varchar(250) NULL,
+	path_photo varchar(200) NULL,
+	req_date DATE NULL,
+	dept varchar(100) NULL,
+	status varchar(1) NULL,
+	user_spv varchar(100) NULL,
+	spv_desc varchar(100) NULL,
+	user_pic varchar(100) NULL,
+	pic_desc varchar(100) NULL,
+	driver_name varchar(100) NULL,
+	vehicle_name varchar(100) NULL,
+	return_desc varchar(100) NULL,
+	path_return varchar(100) NULL,
+	return_date DATE NULL,
+	pic_dreturn_desc varchar(100) NULL,
+	CONSTRAINT request_vehicle_pk PRIMARY KEY (id_req)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+==> drop down vehicle
+CREATE TABLE tnaportal.vehicle (
+	id_vehicle varchar(100) NULL,
+	vehicle_name varchar(100) NULL,
+	id_dept varchar(100) NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+
+==> Ubah tipe data dan tambah kolom end_date 2025-11-01
+ALTER TABLE request_vehicle MODIFY req_date DATETIME;
+ALTER TABLE tnaportal.request_vehicle ADD end_date DATETIME NULL;
+
+==> add master_machine 2025-11-27
+CREATE TABLE tnaportal.master_machine (
+	machine_id varchar(100) NULL,
+	machine_name varchar(100) NULL,
+	machine_barkey varchar(100) NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+==> add work_order_management 2025.11.28
+CREATE TABLE tnaportal.work_order_management (
+	wo_id varchar(100) NULL,
+	machine_id varchar(100) NULL,
+	machine_name varchar(100) NULL,
+	req_id varchar(100) NULL,
+	req_name varchar(100) NULL,
+	wo_date DATE NULL,
+	req_message varchar(250) NULL,
+	req_time DATETIME NULL,
+	status varchar(1) NULL,
+	checker_id varchar(100) NULL,
+	checker_name varchar(100) NULL,
+	checker_time DATETIME NULL,
+	checker_message varchar(250) NULL,
+	mtc_id varchar(100) NULL,
+	mtc_name varchar(100) NULL,
+	mtc_time DATETIME NULL,
+	mtc_message varchar(250) NULL,
+	approve_yn varchar(1) NULL,
+	approver_id varchar(100) NULL,
+	approver_name varchar(100) NULL,
+	approve_time DATETIME NULL,
+	approver_message varchar(200) NULL,
+	sound_yn varchar(1) NULL,
+	note varchar(100) NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+==>add column 2025.12.05
+ALTER TABLE tnaportal.work_order_management ADD path_photo_1 varchar(100) NULL;
+ALTER TABLE tnaportal.work_order_management ADD path_photo_2 varchar(100) NULL;
+
+==>add column 2025.12.19
+ALTER TABLE tnaportal.work_order_management ADD root_cause varchar(100) NULL;
+ALTER TABLE tnaportal.work_order_management ADD temp_act varchar(100) NULL;
+ALTER TABLE tnaportal.work_order_management ADD prev_act varchar(100) NULL;
+
+==>add column ticket 2025.12.29
+ALTER TABLE tnaportal.ticket ADD notes varchar(200) NULL;
+
+--> add table pic rental mail 2026.01.07
+CREATE TABLE tnaportal.pic_rental_mail (
+	dept varchar(100) NULL,
+	mail_to varchar(100) NULL,
+	mail_cc varchar(100) NULL
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_general_ci;
+
+
