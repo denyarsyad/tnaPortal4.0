@@ -42,7 +42,7 @@ class Maintenance_act extends CI_Controller
 
 public function actCheck($id)
 	{
-		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
+	  $level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
       if (in_array($this->session->userdata('level'), $level)) {
 			$data['title'] 	= "Maintenance Action";
 			$data['navbar']   = "navbar";
@@ -110,22 +110,23 @@ public function actCheck($id)
 
 	public function actCheckSubmit($id)
 	{
-		$this->form_validation->set_rules(
-			'machine_idScan',
-			'machine_idScan',
-			'required',
-			array(
-				'required' => '<strong>Failed!</strong> Field Harus diisi.'
-			)
-		);
-		$this->form_validation->set_rules(
-			'machine_name',
-			'machine_name',
-			'required',
-			array(
-				'required' => '<strong>Failed!</strong> Field Harus diisi.'
-			)
-		);
+		$this->session->set_flashdata("IYE KAH?");
+		// $this->form_validation->set_rules(
+		// 	'machine_idScan',
+		// 	'machine_idScan',
+		// 	'required',
+		// 	array(
+		// 		'required' => '<strong>Failed!</strong> Field Harus diisi.'
+		// 	)
+		// );
+		// $this->form_validation->set_rules(
+		// 	'machine_name',
+		// 	'machine_name',
+		// 	'required',
+		// 	array(
+		// 		'required' => '<strong>Failed!</strong> Field Harus diisi.'
+		// 	)
+		// );
 
 		if ($this->form_validation->run() == FALSE) {
 			$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
@@ -149,25 +150,33 @@ public function actCheck($id)
 				redirect('Errorpage');
 			}
 		} else {
-			$id_user  = $this->session->userdata('id_user');
-			$query = $this->db->select('p.nama')
-									->from('pegawai p')
-									->where('p.nik', $id_user)
-									->get();
-			$user_name = ($query->num_rows() > 0) ? $query->row()->nama : null;
 
-			$data = array(
-				'checker_id'    => $id_user,
-				'checker_name'  => $user_name,
-				'checker_time'  => date("Y-m-d H:i:s"),
-				'sound_yn'		=> "Y",
-				'status'        => "6" //CHECKED
-			);
+			$cekMachineId = $this->input->post('machine_idScan'); 
+			$realMachineId = $this->input->post('machine_id');
 
-			$this->db->where('wo_id', $this->input->post('wo_id'));
-			$this->db->update('work_order_management', $data);
-			$this->session->set_flashdata('Checked');
-			redirect('maintenance_act/index');
+			$this->session->set_flashdata("cek = " . $cekMachineId . "dan ini : " . $realMachineId);
+			redirect('maintenance_act/actCheck/'.$id);
+
+
+			// $id_user  = $this->session->userdata('id_user');
+			// $query = $this->db->select('p.nama')
+			// 						->from('pegawai p')
+			// 						->where('p.nik', $id_user)
+			// 						->get();
+			// $user_name = ($query->num_rows() > 0) ? $query->row()->nama : null;
+
+			// $data = array(
+			// 	'checker_id'    => $id_user,
+			// 	'checker_name'  => $user_name,
+			// 	'checker_time'  => date("Y-m-d H:i:s"),
+			// 	'sound_yn'		=> "Y",
+			// 	'status'        => "6" //CHECKED
+			// );
+
+			// $this->db->where('wo_id', $this->input->post('wo_id'));
+			// $this->db->update('work_order_management', $data);
+			// $this->session->set_flashdata('Checked');
+			// redirect('maintenance_act/index');
 		}
 
 	}

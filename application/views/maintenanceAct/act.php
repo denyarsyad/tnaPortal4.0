@@ -219,6 +219,7 @@
 								<option value="Y">Ya</option>
 								<option value="N">Ya, butuh sparepart/tools</option>
 								<option value="P">Ya, butuh sparepart dan tidak ada</option>
+								<option value="X">Ya, pindah mesin</option>
 							</select>
 						</div>
 					</div>
