@@ -436,7 +436,7 @@ public function actCheck($id)
 
 			$this->db->where('wo_id', $this->input->post('wo_id'));
 			$this->db->update('work_order_management', $data);
-			$this->session->set_flashdata('status', 'Done');
+			$this->session->set_flashdata('status', 'Data Berhasil Diselesaikan (Done)!');
 			redirect('maintenance_act/index');
 		}
 	}
