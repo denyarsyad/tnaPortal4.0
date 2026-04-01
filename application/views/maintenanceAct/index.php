@@ -84,11 +84,19 @@
 
 <script type="text/javascript">
 	const flashData = $('.flash-data').data('flashdata');
+
 	if (flashData) {
-		Swal.fire(
-			'Sukses!',
-			'Request anda berhasil ' + flashData,
-			'success'
-		)
-	}
+		let isSuccess = flashData.toLowerCase().includes('berhasil') || flashData.toLowerCase().includes('sukses');
+		
+		let iconType = isSuccess ? 'success' : 'error';
+		let titleText = isSuccess ? 'Berhasil!' : 'Oops...';
+
+		Swal.fire({
+			icon: iconType,
+			title: titleText,
+			text: flashData,
+			showConfirmButton: true,
+			confirmButtonColor: '#3085d6'
+		});
+}
 </script>

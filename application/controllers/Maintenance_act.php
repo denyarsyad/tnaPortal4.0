@@ -110,25 +110,23 @@ public function actCheck($id)
 
 	public function actCheckSubmit($id)
 	{
-		$this->session->set_flashdata("IYE KAH?");
-		// $this->form_validation->set_rules(
-		// 	'machine_idScan',
-		// 	'machine_idScan',
-		// 	'required',
-		// 	array(
-		// 		'required' => '<strong>Failed!</strong> Field Harus diisi.'
-		// 	)
-		// );
-		// $this->form_validation->set_rules(
-		// 	'machine_name',
-		// 	'machine_name',
-		// 	'required',
-		// 	array(
-		// 		'required' => '<strong>Failed!</strong> Field Harus diisi.'
-		// 	)
-		// );
+		$this->form_validation->set_rules(
+			'machine_idScan', 
+			'Machine ID', 
+			'required',
+			array('required' => 'Scan Machine ID tidak boleh kosong!')
+		);
+		$this->form_validation->set_rules(
+			'machine_name', 
+			'Machine Name', 
+			'required',
+			array('required' => 'Nama Mesin harus terisi otomatis setelah scan!')
+		);
 
 		if ($this->form_validation->run() == FALSE) {
+			$this->form_validation->set_error_delimiters('', '');
+			$this->session->set_flashdata('status', validation_errors()); 
+			
 			$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 			if (in_array($this->session->userdata('level'), $level)) {
 				$data['title']   = "Maintenance Action";
@@ -136,13 +134,9 @@ public function actCheck($id)
 				$data['sidebar'] = "sidebar";
 				$data['body']    = "maintenanceAct/actCheck";
 
-				// Session
-				$id_dept  = $this->session->userdata('id_dept');
-				$id_user  = $this->session->userdata('id_user');
-
+				$id_user = $this->session->userdata('id_user');
 				$data['profile'] = $this->model->profile($id_user)->row_array();
 				$data['maintenanceAct'] = $this->model->act($id)->row_array();
-
 				$data['error'] = "";
 
 				$this->load->view('template', $data);
@@ -150,35 +144,37 @@ public function actCheck($id)
 				redirect('Errorpage');
 			}
 		} else {
-
-			$cekMachineId = $this->input->post('machine_idScan'); 
+			$cekMachineId  = $this->input->post('machine_idScan'); 
 			$realMachineId = $this->input->post('machine_id');
 
-			$this->session->set_flashdata("cek = " . $cekMachineId . "dan ini : " . $realMachineId);
-			redirect('maintenance_act/actCheck/'.$id);
+			if ($cekMachineId !== $realMachineId) {
+				$this->session->set_flashdata('status', 'Gagal! Machine ID yang di-scan (' . $cekMachineId . ') tidak sesuai dengan WO (' . $realMachineId . ')');
+				redirect('maintenance_act/actCheck/'.$id);
+			} else {
+				$id_user = $this->session->userdata('id_user');
+				
+				$query = $this->db->select('p.nama')
+								->from('pegawai p')
+								->where('p.nik', $id_user)
+								->get();
+				$user_name = ($query->num_rows() > 0) ? $query->row()->nama : "Unknown";
 
+				$update_data = array(
+					'checker_id'   => $id_user,
+					'checker_name' => $user_name,
+					'checker_time' => date("Y-m-d H:i:s"),
+					'sound_yn'     => "Y",
+					'status'       => "6" // Contoh status CHECKED
+				);
 
-			// $id_user  = $this->session->userdata('id_user');
-			// $query = $this->db->select('p.nama')
-			// 						->from('pegawai p')
-			// 						->where('p.nik', $id_user)
-			// 						->get();
-			// $user_name = ($query->num_rows() > 0) ? $query->row()->nama : null;
+				$this->db->where('wo_id', $id);
+				$this->db->update('work_order_management', $update_data);
 
-			// $data = array(
-			// 	'checker_id'    => $id_user,
-			// 	'checker_name'  => $user_name,
-			// 	'checker_time'  => date("Y-m-d H:i:s"),
-			// 	'sound_yn'		=> "Y",
-			// 	'status'        => "6" //CHECKED
-			// );
-
-			// $this->db->where('wo_id', $this->input->post('wo_id'));
-			// $this->db->update('work_order_management', $data);
-			// $this->session->set_flashdata('Checked');
-			// redirect('maintenance_act/index');
+				// Berhasil!
+				$this->session->set_flashdata('status', 'Data Berhasil di-Check!');
+				redirect('maintenance_act/index');
+			}
 		}
-
 	}
 
     public function submit($id)

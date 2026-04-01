@@ -350,13 +350,17 @@ $(document).on('click', '#btnScan', function () {
 
 <script type="text/javascript">
 	const flashData = $('.flash-data').data('flashdata');
+
 	if (flashData) {
+		let iconType = flashData.includes('Berhasil') ? 'success' : 'error';
+		let titleText = flashData.includes('Berhasil') ? 'Success!' : 'Oops...';
+
 		Swal.fire({
-			icon: 'error',
-			title: flashData,
-			text: 'Something went wrong! file is more than 25MB or not supported format',
+			icon: iconType,
+			title: titleText,
+			text: flashData,
 			footer: ''
-		})
+		});
 	}
 
 	$('textarea').keypress(function(event) {
