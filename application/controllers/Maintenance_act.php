@@ -736,7 +736,7 @@ public function actCheck($id)
 		if ($this->form_validation->run() == FALSE) {
 			$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 			if (in_array($this->session->userdata('level'), $level)) {
-				$data['title']   = "Maintenance Action - Done With Spare Part";
+				$data['title']   = "Maintenance Action - Done With Change Machine";
 				$data['navbar']  = "navbar";
 				$data['sidebar'] = "sidebar";
 				$data['body']    = "maintenanceAct/actChanged";
@@ -777,6 +777,96 @@ public function actCheck($id)
 			$this->db->where('wo_id', $this->input->post('wo_id'));
 			$this->db->update('work_order_management', $data);
 			$this->session->set_flashdata('status', 'Berhasil (Chaged Machine)');
+			redirect('maintenance_act/index');
+		}
+	}
+
+	public function actUpdate($id)
+	{
+		$config = array(
+			array('field' => 'root_cause', 'label' => 'Root Cause', 'rules' => 'required'),
+			array('field' => 'temp_act', 'label' => 'Temporary Action', 'rules' => 'required'),
+			array('field' => 'prev_act', 'label' => 'Preventive Action', 'rules' => 'required'),
+		);
+		$this->form_validation->set_rules($config);
+		$this->form_validation->set_message('required', '<strong>Failed!</strong> Field %s harus diisi.');
+
+		if ($this->form_validation->run() == FALSE) {
+			$allowed_levels = ["Admin", "SPVU"];
+			if (in_array($this->session->userdata('level'), $allowed_levels)) {
+				$id_user = $this->session->userdata('id_user');
+				$data = [
+					'title'          => "Maintenance Action - Detail",
+					'navbar'         => "navbar",
+					'sidebar'        => "sidebar",
+					'body'           => "maintenanceAct/actDetail",
+					'profile'        => $this->model->profile($id_user)->row_array(),
+					'maintenanceAct' => $this->model->act($id)->row_array(),
+					'error'          => ""
+				];
+
+				$this->load->view('template', $data);
+			} else {
+				redirect('Errorpage');
+			}
+		} else {
+			$id_user = $this->session->userdata('id_user');
+			$user = $this->db->get_where('pegawai', ['nik' => $id_user])->row();
+
+			$update_data = [
+				'mtc_id'     => $id_user,
+				'mtc_name'   => ($user) ? $user->nama : 'Unknown',
+				'mtc_time'   => date("Y-m-d H:i:s"),
+				'root_cause' => $this->input->post('root_cause'),
+				'temp_act'   => $this->input->post('temp_act'),
+				'prev_act'   => $this->input->post('prev_act'),
+				'status'     => "7"
+			];
+
+			$this->db->where('wo_id', $id);
+			$this->db->update('work_order_management', $update_data);
+
+			$this->session->set_flashdata('status', 'Berhasil Update');
+			redirect('maintenance_act/index');
+		}
+	}
+
+	public function actNoted($id)
+	{
+		$config = array(
+			array('field' => 'mgr_note', 'label' => 'Manager Note', 'rules' => 'required'),
+		);
+		$this->form_validation->set_rules($config);
+		$this->form_validation->set_message('required', '<strong>Failed!</strong> %s harus diisi.');
+
+		if ($this->form_validation->run() == FALSE) {
+			$allowed_levels = ["MGR"];
+			if (in_array($this->session->userdata('level'), $allowed_levels)) {
+				$id_user = $this->session->userdata('id_user');
+				
+				$data = [
+					'title'          => "Maintenance Action - Detail",
+					'navbar'         => "navbar",
+					'sidebar'        => "sidebar",
+					'body'           => "maintenanceAct/actDetail",
+					'profile'        => $this->model->profile($id_user)->row_array(),
+					'maintenanceAct' => $this->model->act($id)->row_array(),
+					'error'          => ""
+				];
+
+				$this->load->view('template', $data);
+			} else {
+				redirect('Errorpage');
+			}
+		} else {
+			$update_data = [
+				'mgr_note' => $this->input->post('mgr_note'),
+			];
+
+			$this->db->where('wo_id', $id);
+			$this->db->update('work_order_management', $update_data);
+
+			$this->session->set_flashdata('status', 'Berhasil menambahkan Note Manager');
 			redirect('maintenance_act/index');
 		}
 	}
