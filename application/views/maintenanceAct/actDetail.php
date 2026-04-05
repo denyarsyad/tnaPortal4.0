@@ -145,13 +145,25 @@
 					</div>
 				</div>	
 
-				<div class="form-group">
-					<label class="mb-1 font-weight-bold">Spare Part <span class="text-danger small">*Required</span></label>
-					<textarea id="mtc_message" class="form-control <?= (form_error('mtc_message') ? 'is-invalid' : '') ?>" name="mtc_message" readonly><?= $maintenanceAct['mtc_message'] ?></textarea>
-					<div class="invalid-feedback">
-						<?= form_error('mtc_message'); ?>
+				<?php if (!empty($maintenanceAct['mtc_message'])): ?>
+					<div class="form-group">
+						<label class="mb-1 font-weight-bold">Spare Part <span class="text-danger small">*Required</span></label>
+						<textarea id="mtc_message" class="form-control <?= (form_error('mtc_message') ? 'is-invalid' : '') ?>" name="mtc_message" readonly><?= $maintenanceAct['mtc_message'] ?></textarea>
+						<div class="invalid-feedback">
+							<?= form_error('mtc_message'); ?>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
+
+				<?php if ($maintenanceAct['status'] == 7): ?>
+					<div class="form-group">
+						<label class="mb-1 font-weight-bold">Changed to Machine <span class="text-danger small">*Required</span></label>
+						<textarea id="change_mc" class="form-control <?= (form_error('change_mc') ? 'is-invalid' : '') ?>" name="change_mc" readonly><?= $maintenanceAct['change_mc'] ?></textarea>
+						<div class="invalid-feedback">
+							<?= form_error('change_mc'); ?>
+						</div>
+					</div>
+				<?php endif; ?>
 
 				<div class="form-group">
 					<label class="mb-1 font-weight-bold">Root Cause <span class="text-danger small">*Required</span></label>
