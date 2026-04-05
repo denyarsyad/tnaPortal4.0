@@ -189,6 +189,9 @@ public function actCheck($id)
 		else if ($note == 'P') {
 			redirect('maintenance_act/actPending/'.$id);
 		} 
+		else if ($note == 'C') {
+			redirect('maintenance_act/actChanged/'.$id);
+		}
 		else {
 			echo "Kamu gak pilih combo";
 		}
@@ -667,7 +670,33 @@ public function actCheck($id)
 		
 	}
 
-	
+	public function actChanged($id)
+	{
+		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
+		if (in_array($this->session->userdata('level'), $level)) {
+			$data['title']   = "Maintenance Action - Changed Machine";
+			$data['navbar']  = "navbar";
+			$data['sidebar'] = "sidebar";
+			$data['body']    = "maintenanceAct/actChanged";
+
+			// Session
+			$id_dept  = $this->session->userdata('id_dept');
+			$id_user  = $this->session->userdata('id_user');
+
+			$data['profile'] = $this->model->profile($id_user)->row_array();
+
+			// ambil data maintenance berdasarkan id
+			$data['maintenanceAct'] = $this->model->act($id)->row_array();
+			// boleh beri indikator bahwa ini status DONE
+			$data['status'] = "done";  
+			$data['error'] = "";
+
+			// load template
+			$this->load->view('template', $data);
+		} else {
+			redirect('Errorpage');
+		}
+	}
 
 
 }
