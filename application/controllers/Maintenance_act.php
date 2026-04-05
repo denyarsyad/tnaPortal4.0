@@ -698,5 +698,88 @@ public function actCheck($id)
 		}
 	}
 
+	public function doneChanged()
+	{
+		$this->form_validation->set_rules(
+			'change_mc',
+			'change_mc',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+		$this->form_validation->set_rules(
+			'root_cause',
+			'root_cause',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+		$this->form_validation->set_rules(
+			'temp_act',
+			'temp_act',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+		$this->form_validation->set_rules(
+			'prev_act',
+			'prev_act',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+
+		if ($this->form_validation->run() == FALSE) {
+			$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
+			if (in_array($this->session->userdata('level'), $level)) {
+				$data['title']   = "Maintenance Action - Done With Spare Part";
+				$data['navbar']  = "navbar";
+				$data['sidebar'] = "sidebar";
+				$data['body']    = "maintenanceAct/actChanged";
+
+				// Session
+				$id_dept  = $this->session->userdata('id_dept');
+				$id_user  = $this->session->userdata('id_user');
+
+				$data['profile'] = $this->model->profile($id_user)->row_array();
+				$data['maintenanceAct'] = $this->model->act($id)->row_array();
+				$data['status'] = "done";  
+				$data['error'] = "";
+
+				$this->load->view('template', $data);
+			} else {
+				redirect('Errorpage');
+			}
+		} else {
+			$id_user  = $this->session->userdata('id_user');
+			$query = $this->db->select('p.nama')
+									->from('pegawai p')
+									->where('p.nik', $id_user)
+									->get();
+			$user_name = ($query->num_rows() > 0) ? $query->row()->nama : null;
+
+			$data = array(
+				'mtc_id'    	 => $id_user,
+				'mtc_name' 		 => $user_name,
+				'mtc_time'  	 => date("Y-m-d H:i:s"),
+				'change_mc'   	 => $this->input->post('change_mc'),
+				'root_cause'     => $this->input->post('root_cause'),
+				'temp_act'   	 => $this->input->post('temp_act'),
+				'prev_act'   	 => $this->input->post('prev_act'),
+				'sound_yn'		 => "Y",
+				'status'         => "7" //Changed machine
+			);
+
+			$this->db->where('wo_id', $this->input->post('wo_id'));
+			$this->db->update('work_order_management', $data);
+			$this->session->set_flashdata('status', 'Berhasil (Chaged Machine)');
+			redirect('maintenance_act/index');
+		}
+	}
+
 
 }
