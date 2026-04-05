@@ -110,7 +110,7 @@
 			<h6 class="m-0 font-weight-bold text-primary">Form Respone Downtime</h6>
 		</div>
 		<div class="card-body">
-			<form method="post" action="<?= site_url('maintenance_act/action') ?>" enctype="multipart/form-data">
+			<form method="post" action="<?= site_url('maintenance_act/' . ($this->session->userdata('level') === 'MGR' ? 'actNoted' : 'actUpdate') . '/' . $maintenanceAct['wo_id']) ?>" enctype="multipart/form-data">
 
 				<input class="form-control" name="nama" value="<?= $profile['nama'] ?>" hidden>
 				<input class="form-control" name="email" value="<?= $profile['email'] ?>" hidden>
@@ -167,7 +167,7 @@
 
 				<div class="form-group">
 					<label class="mb-1 font-weight-bold">Root Cause <span class="text-danger small">*Required</span></label>
-					<textarea id="root_cause" class="form-control <?= (form_error('root_cause') ? 'is-invalid' : '') ?>" name="root_cause" readonly><?= $maintenanceAct['root_cause'] ?></textarea>
+					<textarea id="root_cause" class="form-control <?= (form_error('root_cause') ? 'is-invalid' : '') ?>" name="root_cause" <?= !in_array($this->session->userdata('level'), ['SPVU']) ? 'readonly' : '' ?>><?= $maintenanceAct['root_cause'] ?></textarea>
 					<div class="invalid-feedback">
 						<?= form_error('root_cause'); ?>
 					</div>
@@ -175,7 +175,7 @@
 
 				<div class="form-group">
 					<label class="mb-1 font-weight-bold">Temporary Action <span class="text-danger small">*Required</span></label>
-					<textarea id="temp_act" class="form-control <?= (form_error('temp_act') ? 'is-invalid' : '') ?>" name="temp_act" readonly><?= $maintenanceAct['temp_act'] ?></textarea>
+					<textarea id="temp_act" class="form-control <?= (form_error('temp_act') ? 'is-invalid' : '') ?>" name="temp_act" <?= !in_array($this->session->userdata('level'), ['SPVU']) ? 'readonly' : '' ?>><?= $maintenanceAct['temp_act'] ?></textarea>
 					<div class="invalid-feedback">
 						<?= form_error('temp_act'); ?>
 					</div>
@@ -183,11 +183,41 @@
 
 				<div class="form-group">
 					<label class="mb-1 font-weight-bold">Preventive Action <span class="text-danger small">*Required</span></label>
-					<textarea id="prev_act" class="form-control <?= (form_error('prev_act') ? 'is-invalid' : '') ?>" name="prev_act" readonly><?= $maintenanceAct['prev_act'] ?></textarea>
+					<textarea id="prev_act" class="form-control <?= (form_error('prev_act') ? 'is-invalid' : '') ?>" name="prev_act" <?= !in_array($this->session->userdata('level'), ['SPVU']) ? 'readonly' : '' ?>><?= $maintenanceAct['prev_act'] ?></textarea>
 					<div class="invalid-feedback">
 						<?= form_error('prev_act'); ?>
 					</div>
 				</div>
+
+				<?php if ($this->session->userdata('level') === 'MGR'): ?>
+					<div class="form-group">
+						<label class="mb-1 font-weight-bold">
+							<i class="fas fa-sticky-note"></i> Note <span class="text-danger small">*Required</span>
+						</label>
+						<textarea id="mgr_note" 
+								class="form-control <?= (form_error('mgr_note') ? 'is-invalid' : '') ?>" 
+								name="mgr_note"><?= isset($maintenanceAct['mgr_note']) ? $maintenanceAct['mgr_note'] : '' ?></textarea>
+						<div class="invalid-feedback">
+							<?= form_error('mgr_note'); ?>
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<?php if ($this->session->userdata('level') === 'SPVU'): ?>
+					<div class="mt-3">
+						<button type="submit" class="btn btn-success btn-lg mr-2">
+							<i class="fas fa-edit"></i>
+							Update
+						</button>
+					</div>
+				<?php elseif ($this->session->userdata('level') === 'MGR'): ?>	
+					<div class="mt-3">
+						<button type="submit" class="btn btn-primary btn-lg mr-2">
+							<i class="fas fa-sticky-note"></i>
+							Add Note
+						</button>
+					</div>
+				<?php endif; ?>
 
 			</form>
 		</div>
