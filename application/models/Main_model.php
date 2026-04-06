@@ -4482,7 +4482,8 @@ public function approveIncidentMgr($id)
                                       wom.checker_name,
                                       DATE_FORMAT(wom.checker_time, '%Y-%m-%d') AS checker_date,
                                       TIME_FORMAT(wom.checker_time, '%H:%i:%s') AS checker_time,
-                                      change_mc
+                                      change_mc,
+                                      mgr_note
                                  FROM work_order_management wom
                                 WHERE wom.wo_id = '$id'
                              ORDER BY wom.wo_date DESC");

@@ -189,14 +189,24 @@
 					</div>
 				</div>
 
-				<?php if ($this->session->userdata('level') === 'MGR'): ?>
+				<?php 
+					$userLevel = $this->session->userdata('level');
+					$mgrNoteValue = isset($maintenanceAct['mgr_note']) ? $maintenanceAct['mgr_note'] : '';
+					if ($userLevel === 'MGR' || !empty($mgrNoteValue)): 
+				?>
 					<div class="form-group">
 						<label class="mb-1 font-weight-bold">
-							<i class="fas fa-sticky-note"></i> Note <span class="text-danger small">*Required</span>
+							<i class="fas fa-sticky-note"></i> Note 
+							<?php if ($userLevel === 'MGR'): ?>
+								<span class="text-danger small">*Required</span>
+							<?php endif; ?>
 						</label>
+
 						<textarea id="mgr_note" 
-								class="form-control <?= (form_error('mgr_note') ? 'is-invalid' : '') ?>" 
-								name="mgr_note"><?= isset($maintenanceAct['mgr_note']) ? $maintenanceAct['mgr_note'] : '' ?></textarea>
+							class="form-control <?= (form_error('mgr_note') ? 'is-invalid' : '') ?>" 
+							name="mgr_note"
+							<?= ($userLevel !== 'MGR') ? 'readonly' : '' ?>><?= $mgrNoteValue ?></textarea>
+
 						<div class="invalid-feedback">
 							<?= form_error('mgr_note'); ?>
 						</div>
