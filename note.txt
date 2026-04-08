@@ -1,3 +1,4 @@
 ALTER TABLE helpdesk.work_order_management ADD change_mc varchar(100) NULL;
 ALTER TABLE helpdesk.work_order_management ADD mgr_note varchar(200) NULL;
 
+composer update --ignore-platform-reqs --no-audit
