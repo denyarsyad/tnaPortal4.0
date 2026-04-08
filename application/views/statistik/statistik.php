@@ -1,3 +1,9 @@
+<?php if($this->session->flashdata('error')): ?>
+    <div style="color: red; background: #ffcccc; padding: 10px; margin-bottom: 10px;">
+        <?php echo $this->session->flashdata('error'); ?>
+    </div>
+<?php endif; ?>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$("#id_tahun").change(function() {
