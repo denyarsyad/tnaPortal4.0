@@ -701,37 +701,14 @@ public function actCheck($id)
 	public function doneChanged()
 	{
 		$this->form_validation->set_rules(
-			'change_mc',
-			'change_mc',
+			'machine_name_change',
+			'machine_name_change',
 			'required',
 			array(
 				'required' => '<strong>Failed!</strong> Field Harus diisi.'
 			)
 		);
-		$this->form_validation->set_rules(
-			'root_cause',
-			'root_cause',
-			'required',
-			array(
-				'required' => '<strong>Failed!</strong> Field Harus diisi.'
-			)
-		);
-		$this->form_validation->set_rules(
-			'temp_act',
-			'temp_act',
-			'required',
-			array(
-				'required' => '<strong>Failed!</strong> Field Harus diisi.'
-			)
-		);
-		$this->form_validation->set_rules(
-			'prev_act',
-			'prev_act',
-			'required',
-			array(
-				'required' => '<strong>Failed!</strong> Field Harus diisi.'
-			)
-		);
+		
 
 		if ($this->form_validation->run() == FALSE) {
 			$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
@@ -766,10 +743,7 @@ public function actCheck($id)
 				'mtc_id'    	 => $id_user,
 				'mtc_name' 		 => $user_name,
 				'mtc_time'  	 => date("Y-m-d H:i:s"),
-				'change_mc'   	 => $this->input->post('change_mc'),
-				'root_cause'     => $this->input->post('root_cause'),
-				'temp_act'   	 => $this->input->post('temp_act'),
-				'prev_act'   	 => $this->input->post('prev_act'),
+				'change_mc'   	 => $this->input->post('machine_idScan'),
 				'sound_yn'		 => "Y",
 				'status'         => "7" //Changed machine
 			);
