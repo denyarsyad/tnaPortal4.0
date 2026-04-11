@@ -28,13 +28,15 @@
 							<tr>
 								<td><?= $no ?></td>
 								<td>
-									<?php if (in_array($row->status, ["2", "7"])) { ?>
+									<?php if (in_array($row->status, ["2"])) { ?>
 										<!-- <a href="<?= site_url('maintenance_act/actConfirm/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a> -->
 										 <a href="<?= site_url('maintenance_act/actDetail/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a>
 									<?php } else if (in_array($row->status, ["3"])) { ?>
 										<a href="<?= site_url('maintenance_act/actShow/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a>
 									<?php } else if (in_array($row->status, ["6"])) { ?>
 										<a href="<?= site_url('maintenance_act/act/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a>
+									<?php } else if (in_array($row->status, ["7"])) { ?>
+										<a href="<?= site_url('maintenance_act/actChangedDone/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a>	
 									<?php } else { ?>
 										<a href="<?= site_url('maintenance_act/actCheck/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a>
 									<?php } ?>

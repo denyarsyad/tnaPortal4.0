@@ -698,6 +698,34 @@ public function actCheck($id)
 		}
 	}
 
+	public function actChangedDone($id)
+	{
+		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
+		if (in_array($this->session->userdata('level'), $level)) {
+			$data['title']   = "Maintenance Action - Changed Machine";
+			$data['navbar']  = "navbar";
+			$data['sidebar'] = "sidebar";
+			$data['body']    = "maintenanceAct/actChangedDone";
+
+			// Session
+			$id_dept  = $this->session->userdata('id_dept');
+			$id_user  = $this->session->userdata('id_user');
+
+			$data['profile'] = $this->model->profile($id_user)->row_array();
+
+			// ambil data maintenance berdasarkan id
+			$data['maintenanceAct'] = $this->model->act($id)->row_array();
+			// boleh beri indikator bahwa ini status DONE
+			$data['status'] = "done";  
+			$data['error'] = "";
+
+			// load template
+			$this->load->view('template', $data);
+		} else {
+			redirect('Errorpage');
+		}
+	}
+
 	public function doneChanged()
 	{
 		$this->form_validation->set_rules(
