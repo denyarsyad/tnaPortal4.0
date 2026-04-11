@@ -4483,6 +4483,7 @@ public function approveIncidentMgr($id)
                                       DATE_FORMAT(wom.checker_time, '%Y-%m-%d') AS checker_date,
                                       TIME_FORMAT(wom.checker_time, '%H:%i:%s') AS checker_time,
                                       change_mc,
+                                      (SELECT MAX(mm.machine_name) FROM master_machine mm WHERE mm.machine_id = change_mc) AS change_mc_nm,
                                       mgr_note
                                  FROM work_order_management wom
                                 WHERE wom.wo_id = '$id'

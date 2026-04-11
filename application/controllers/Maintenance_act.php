@@ -702,7 +702,7 @@ public function actCheck($id)
 	{
 		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 		if (in_array($this->session->userdata('level'), $level)) {
-			$data['title']   = "Maintenance Action - Changed Machine";
+			$data['title']   = "Maintenance Action - Changed Machine Done";
 			$data['navbar']  = "navbar";
 			$data['sidebar'] = "sidebar";
 			$data['body']    = "maintenanceAct/actChangedDone";

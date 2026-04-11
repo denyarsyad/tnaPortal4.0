@@ -206,57 +206,24 @@
 					</div>
 				</div>	
 
-				<!-- <div class="form-group">
-					<label class="mb-1 font-weight-bold">Change to Machine <span class="text-danger small">*Required</span></label>
-					<textarea name="change_mc" placeholder="" class="form-control <?= (form_error('change_mc') ? "is-invalid" : "") ?>" rows="2"><?= set_value('change_mc'); ?></textarea>
-					<div class="invalid-feedback">
-						<?= form_error('change_mc'); ?>
-					</div>
-				</div> -->
-
-				<div class="row mb-3">
-					<div class="col-md-2">
-						<div class="form-group">
-							<label class="mb-1 d-block">&nbsp;</label> 
-							<button type="button" id="btnFocusScan" class="btn btn-primary btn-block">
-								Focus Scan
-							</button>
-						</div>
-						<div class="row">
-							<div class="col-sm-12">
-								<div id="reader" style="width:300px; display:none;"></div>
-							</div>
-						</div>
-						<audio id="beepSound" preload="auto">
-							<source src="<?= base_url('../../../assets/sound/beepSound.mp3') ?>" type="audio/mpeg">
-						</audio>
-					</div>
-					<div class="col-md-4">
+				<div class="row mb-3">	
+					<div class="col-md-6">
 						<div class="form-group">
 							<label class="mb-1 font-weight-bold">Machine ID</label>
 
 							<input type="text"
-								id="machine_idScan_input"
-								class="form-control"
-								autofocus
-								style="opacity:100; position:absolute; pointer-events:none;">
-
-							<input type="text"
 								id="machine_idScan_display"
 								class="form-control"
-								placeholder="Scan Machine ID"
+								value="<?= $maintenanceAct['change_mc'] ?>" 
 								readonly>
 
-							<input type="hidden"
-								id="machine_idScan"
-								name="machine_idScan">
 						</div>
 					</div>
 
 					<div class="col-md-6">
 						<div class="form-group">
 							<label class="mb-1 font-weight-bold">Machine Name</label>
-							<input type="text" id="machine_name_change" name="machine_name_change" class="form-control" ... readonly>
+							<input type="text" id="machine_name_change" name="machine_name_change" class="form-control" value="<?= $maintenanceAct['change_mc_nm'] ?>"  ... readonly>
 						</div>
 					</div>
 				</div>
