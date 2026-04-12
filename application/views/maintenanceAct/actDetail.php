@@ -155,7 +155,7 @@
 					</div>
 				<?php endif; ?>
 
-				<?php if ($maintenanceAct['status'] == 7): ?>
+				<?php if (!empty($maintenanceAct['change_mc'])): ?>
 					<div class="form-group">
 						<label class="mb-1 font-weight-bold">Changed to Machine <span class="text-danger small">*Required</span></label>
 						<textarea id="change_mc" class="form-control <?= (form_error('change_mc') ? 'is-invalid' : '') ?>" name="change_mc" readonly><?= $maintenanceAct['change_mc'] ?></textarea>
