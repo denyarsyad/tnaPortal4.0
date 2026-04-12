@@ -783,6 +783,81 @@ public function actCheck($id)
 		}
 	}
 
+	public function doneChangedDone()
+	{
+		$this->form_validation->set_rules(
+			'root_cause',
+			'root_cause',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+		$this->form_validation->set_rules(
+			'temp_act',
+			'temp_act',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+		$this->form_validation->set_rules(
+			'prev_act',
+			'prev_act',
+			'required',
+			array(
+				'required' => '<strong>Failed!</strong> Field Harus diisi.'
+			)
+		);
+		
+
+		if ($this->form_validation->run() == FALSE) {
+			$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
+			if (in_array($this->session->userdata('level'), $level)) {
+				$data['title']   = "Maintenance Action - Change Machine Done";
+				$data['navbar']  = "navbar";
+				$data['sidebar'] = "sidebar";
+				$data['body']    = "maintenanceAct/actChangedDone";
+
+				// Session
+				$id_dept  = $this->session->userdata('id_dept');
+				$id_user  = $this->session->userdata('id_user');
+
+				$data['profile'] = $this->model->profile($id_user)->row_array();
+				$data['maintenanceAct'] = $this->model->act($id)->row_array();
+				$data['status'] = "done";  
+				$data['error'] = "";
+
+				$this->load->view('template', $data);
+			} else {
+				redirect('Errorpage');
+			}
+		} else {
+			$id_user  = $this->session->userdata('id_user');
+			$query = $this->db->select('p.nama')
+									->from('pegawai p')
+									->where('p.nik', $id_user)
+									->get();
+			$user_name = ($query->num_rows() > 0) ? $query->row()->nama : null;
+
+			$data = array(
+				'repair_id'    	 => $id_user,
+				'repair_name' 	 => $user_name,
+				'repair_time'  	 => date("Y-m-d H:i:s"),
+				'root_cause'     => $this->input->post('root_cause'),
+				'temp_act'   	 => $this->input->post('temp_act'),
+				'prev_act'   	 => $this->input->post('prev_act'),
+				'sound_yn'		 => "Y",
+				'status'         => "2" //Done
+			);
+
+			$this->db->where('wo_id', $this->input->post('wo_id'));
+			$this->db->update('work_order_management', $data);
+			$this->session->set_flashdata('status', 'Data Berhasil Diselesaikan (Done)!');
+			redirect('maintenance_act/index');
+		}
+	}
+
 	public function actUpdate($id)
 	{
 		$config = array(
