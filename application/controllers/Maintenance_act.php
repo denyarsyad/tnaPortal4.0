@@ -525,7 +525,7 @@ public function actCheck($id)
 
 			$this->db->where('wo_id', $this->input->post('wo_id'));
 			$this->db->update('work_order_management', $data);
-			$this->session->set_flashdata('status', 'Done With Spare Part');
+			$this->session->set_flashdata('status', 'Berhasil (Done With Spare Part)');
 			redirect('maintenance_act/index');
 		}
 	}
@@ -608,7 +608,7 @@ public function actCheck($id)
 
 			$this->db->where('wo_id', $this->input->post('wo_id'));
 			$this->db->update('work_order_management', $data);
-			$this->session->set_flashdata('status', 'Pending');
+			$this->session->set_flashdata('status', 'Berhasil Pending');
 			redirect('maintenance_act/index');
 		}
 	}
@@ -897,7 +897,7 @@ public function actCheck($id)
 				'root_cause' => $this->input->post('root_cause'),
 				'temp_act'   => $this->input->post('temp_act'),
 				'prev_act'   => $this->input->post('prev_act'),
-				'status'     => "7"
+				'status'     => "2" //Done
 			];
 
 			$this->db->where('wo_id', $id);
