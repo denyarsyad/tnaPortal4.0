@@ -239,7 +239,7 @@
 								id="machine_idScan_input"
 								class="form-control"
 								autofocus
-								style="opacity:100; position:absolute; pointer-events:none;">
+								style="opacity:0; position:absolute; pointer-events:none;">
 
 							<input type="text"
 								id="machine_idScan_display"
