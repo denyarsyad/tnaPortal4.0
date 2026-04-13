@@ -359,18 +359,29 @@ class Statistik extends CI_Controller
 									ORDER BY A.tanggal DESC", [$tgl1, $tgl2])->result_array();
 			$headers = ['Ticket ID', 'Status', 'Prioritas', 'Tanggal', 'Deadline', 'Nama', 'Kategori', 'Lokasi', 'Subjek', 'Diperbarui', 'Teknisi'];
 		} else {
-			$data = $this->db->query("SELECT wom.wo_id, DATE_FORMAT(wom.req_time, '%Y-%m-%d %H:%i:%s') AS wo_date,
-											wom.machine_id, wom.machine_name, wom.req_message,
-											CASE wom.status
-												WHEN 0 THEN 'Submited' WHEN 1 THEN 'Pending'
-												WHEN 2 THEN 'Done' WHEN 5 THEN 'Finished'
-												ELSE wom.status END AS status_label,
+			$data = $this->db->query("SELECT wom.wo_id, 
+											 wom.checker_name,
+											 wom.mtc_name,
+											 wom.req_name,
+											 DATE_FORMAT(wom.req_time, '%Y-%m-%d %H:%i:%s') AS wo_date,
+											 wom.machine_id, wom.machine_name, wom.req_message,
+											 CASE wom.status
+										 		  WHEN 0 THEN 'Submited' WHEN 1 THEN 'Pending'
+										 		  WHEN 2 THEN 'Done' WHEN 5 THEN 'Finished'
+												  ELSE wom.status 
+											END AS status_label,
 											IFNULL(TIMEDIFF(wom.checker_time, wom.req_time), '00:00:00') AS response,
-											IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS down
+											IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS down,
+											DATE_FORMAT(wom.mtc_time , '%Y-%m-%d %H:%i:%s') AS done_time,
+											DATE_FORMAT(wom.checker_time , '%Y-%m-%d %H:%i:%s') AS check_time,
+											wom.root_cause,
+											wom.temp_act,
+											wom.prev_act,
+											wom.mtc_message
 									FROM work_order_management wom
 									WHERE DATE(wom.req_time) BETWEEN ? AND ?
 									ORDER BY wom.req_time DESC", [$tgl1, $tgl2])->result_array();
-			$headers = ['ID', 'WO DATE', 'MACHINE ID', 'MACHINE NAME', 'REQ MESSAGE', 'STATUS', 'RESPONSE', 'DOWN'];
+			$headers = ['ID', 'PIC MTC 1', 'PIC MTC 2', 'PIC PRODUKSI', 'WO DATE', 'MACHINE ID', 'MACHINE NAME', 'REQ MESSAGE', 'STATUS', 'RESPONSE', 'DOWN', 'WAKTU CLOSE', 'WAKTU REPAIR', 'ROOT CAUSE', 'TEMPORARY ACTION', 'PREVENTIVE ACTION', 'SPARE PART'];
 		}
 
 		if (empty($data)) {
