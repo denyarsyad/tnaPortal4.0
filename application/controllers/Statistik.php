@@ -372,7 +372,11 @@ class Statistik extends CI_Controller
 											END AS status_label,
 											IFNULL(TIMEDIFF(wom.checker_time, wom.req_time), '00:00:00') AS response,
 											IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS down,
-											IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS done_time,
+											--IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS done_time,
+											CASE 
+												WHEN wom.repair_time IS NULL THEN DATE_FORMAT(wom.mtc_time, '%Y-%m-%d %H:%i:%s')
+												ELSE DATE_FORMAT(wom.repair_time, '%Y-%m-%d %H:%i:%s') 
+											END AS done_time,
 											IFNULL(TIMEDIFF(wom.repair_time , wom.req_time), '00:00:00') AS repair_time,
 											wom.root_cause,
 											wom.temp_act,
