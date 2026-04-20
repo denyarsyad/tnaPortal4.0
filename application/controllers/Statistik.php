@@ -363,30 +363,17 @@ class Statistik extends CI_Controller
 											 wom.checker_name,
 											 wom.mtc_name,
 											 wom.req_name,
-											 DATE_FORMAT(wom.req_time, '%Y-%m-%d %H:%i:%s') AS wo_date,
+											 DATE_FORMAT(wom.req_time, '%Y-%m-%d %H:%i:%s') AS req_time,
 											 wom.machine_id, wom.machine_name, wom.req_message,
 											 CASE wom.status
 										 		  WHEN 0 THEN 'Submited' WHEN 1 THEN 'Pending'
 										 		  WHEN 2 THEN 'Done' WHEN 5 THEN 'Finished'
+												  WHEN 6 THEN 'Checked' WHEN 7 THEN 'Change Machine'
 												  ELSE wom.status 
 											END AS status_label,
-											IFNULL(TIMEDIFF(wom.checker_time, wom.req_time), '00:00:00') AS response,
-											IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS down,
-											/*CASE 
-												WHEN wom.repair_time IS NULL THEN DATE_FORMAT(wom.mtc_time, '%Y-%m-%d %H:%i:%s')
-												ELSE DATE_FORMAT(wom.repair_time, '%Y-%m-%d %H:%i:%s') 
-											END AS done_time,*/
-											DATE_FORMAT(
-												DATE_ADD(wom.req_time, INTERVAL (
-													TIME_TO_SEC(IFNULL(TIMEDIFF(wom.checker_time, wom.req_time), '00:00:00')) + 
-													TIME_TO_SEC(IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00')) + 
-													CASE 
-														WHEN wom.repair_time IS NOT NULL THEN TIME_TO_SEC(TIMEDIFF(wom.repair_time, wom.req_time)) 
-														ELSE 0 
-													END
-												) SECOND), 
-												'%Y-%m-%d %H:%i:%s'
-											) AS done_time,
+											IFNULL(TIMEDIFF(wom.checker_time, wom.req_time), '00:00:00') AS response_time,
+											IFNULL(TIMEDIFF(wom.mtc_time , wom.req_time), '00:00:00') AS down_time,
+											DATE_FORMAT(IFNULL(wom.repair_time, wom.mtc_time), '%Y-%m-%d %H:%i:%s') AS close_time,
 											IFNULL(TIMEDIFF(wom.repair_time , wom.req_time), '00:00:00') AS repair_time,
 											wom.root_cause,
 											wom.temp_act,
