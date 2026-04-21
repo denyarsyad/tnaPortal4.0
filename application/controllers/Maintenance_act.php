@@ -891,9 +891,9 @@ public function actCheck($id)
 			$user = $this->db->get_where('pegawai', ['nik' => $id_user])->row();
 
 			$update_data = [
-				'mtc_id'     => $id_user,
-				'mtc_name'   => ($user) ? $user->nama : 'Unknown',
-				'mtc_time'   => date("Y-m-d H:i:s"),
+				//'mtc_id'     => $id_user,
+				//'mtc_name'   => ($user) ? $user->nama : 'Unknown',
+				//'mtc_time'   => date("Y-m-d H:i:s"),
 				'root_cause' => $this->input->post('root_cause'),
 				'temp_act'   => $this->input->post('temp_act'),
 				'prev_act'   => $this->input->post('prev_act'),
