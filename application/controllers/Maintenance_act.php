@@ -628,16 +628,16 @@ public function actCheck($id)
 			if ($action == 'confirm') {
 				$data = array(
 					'approver_id'   	 => $id_user,
-					'approver_name'    => $user_name,
-					'approve_time' 	 => date("Y-m-d H:i:s"),
-					'approver_message' => $this->input->post('approver_message'),
+					'approver_name'    	 => $user_name,
+					'approve_time' 	 	 => date("Y-m-d H:i:s"),
+					//'approver_message'   => $this->input->post('approver_message'),
 					'sound_yn'		 	 => "Y",
 					'status'        	 => "3" //APPROVED OR CONFIRMED
 				);
 
 				$this->db->where('wo_id', $this->input->post('wo_id'));
 				$this->db->update('work_order_management', $data);
-				$this->session->set_flashdata('status', "Approved");
+				$this->session->set_flashdata('status', "Berhasil Approved");
 			} else {
 				$data = array(
 					// 'checker_id'   	 => "",
@@ -662,7 +662,7 @@ public function actCheck($id)
 				$this->db->update('work_order_management', $data);
 				$this->session->set_flashdata('status', 'Returned');
 			}
-			redirect('maintenance_act/index');
+			redirect('maintenance/index');
 			
 		} else {
 			redirect('Errorpage');

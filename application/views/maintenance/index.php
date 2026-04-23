@@ -35,7 +35,13 @@
 						foreach ($maintenance as $row) { ?>
 							<tr>
 								<td><?= $no ?></td>
-								<td><?= $row->wo_id ?></td>
+								<td>
+									<?php if (in_array($row->status, ["2"])) { ?>
+										<a href="<?= site_url('maintenance_act/actConfirm/' . $row->wo_id) ?>" class="font-weight-bold"><?= $row->wo_id ?></a>
+									<?php } else { ?>
+										<?= $row->wo_id ?>
+									<?php } ?>
+								</td>
 								<td><?= $row->wo_date ?></td>
 								<td><?= $row->respone_time ?></td>
 								<td><?= $row->down_time ?></td>
@@ -56,7 +62,7 @@
 									</td>
 								<?php } else if ($row->status == 3) { ?>
 									<td>
-										<strong style="color: #000080;">Request Approved</strong>
+										<strong style="color: #000080;">Confirm</strong>
 									</td>
 								<?php } else if ($row->status == 4) { ?>
 									<td>
@@ -70,6 +76,10 @@
 									<td>
 										<strong style="color: #B3B300;">Checked</strong>
 									</td>
+								<?php } else if ($row->status == 7) { ?>
+									<td>
+										<strong style="color: #75028f;">Change Machine</strong>
+									</td>		
 								<?php } ?>
 			
 							</tr>

@@ -62,7 +62,7 @@
 									</td>
 								<?php } else if ($row->status == 3) { ?>
 									<td>
-										<strong style="color: #000080;">Request Approved</strong>
+										<strong style="color: #000080;">Confirm</strong>
 									</td>
 								<?php } else if ($row->status == 5) { ?>
 									<td>

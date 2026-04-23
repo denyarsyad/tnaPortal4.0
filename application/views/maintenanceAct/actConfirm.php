@@ -145,54 +145,83 @@
 					</div>
 				</div>	
 
-				<div class="form-group">
-					<label class="mb-1 font-weight-bold">Spare Part <span class="text-danger small">*Required</span></label>
-					<textarea id="mtc_message" class="form-control <?= (form_error('mtc_message') ? 'is-invalid' : '') ?>" name="mtc_message" readonly><?= $maintenanceAct['mtc_message'] ?></textarea>
-					<div class="invalid-feedback">
-						<?= form_error('mtc_message'); ?>
+				<?php if (!empty($maintenanceAct['mtc_message'])): ?>
+					<div class="form-group">
+						<label class="mb-1 font-weight-bold">Spare Part <span class="text-danger small">*Required</span></label>
+						<textarea id="mtc_message" class="form-control <?= (form_error('mtc_message') ? 'is-invalid' : '') ?>" name="mtc_message" readonly><?= $maintenanceAct['mtc_message'] ?></textarea>
+						<div class="invalid-feedback">
+							<?= form_error('mtc_message'); ?>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
+
+				<?php if (!empty($maintenanceAct['change_mc'])): ?>
+					<div class="form-group">
+						<label class="mb-1 font-weight-bold">Changed to Machine <span class="text-danger small"></span></label>
+						<textarea id="change_mc" class="form-control <?= (form_error('change_mc') ? 'is-invalid' : '') ?>" name="change_mc" readonly><?= $maintenanceAct['change_mc'] ?></textarea>
+						<div class="invalid-feedback">
+							<?= form_error('change_mc'); ?>
+						</div>
+					</div>
+				<?php endif; ?>
 
 				<div class="form-group">
-					<label class="mb-1 font-weight-bold">Root Cause <span class="text-danger small">*Required</span></label>
-					<textarea id="root_cause" class="form-control <?= (form_error('root_cause') ? 'is-invalid' : '') ?>" name="root_cause" readonly><?= $maintenanceAct['root_cause'] ?></textarea>
+					<label class="mb-1 font-weight-bold">Root Cause <span class="text-danger small"></span></label>
+					<textarea id="root_cause" class="form-control <?= (form_error('root_cause') ? 'is-invalid' : '') ?>" name="root_cause" <?= !in_array($this->session->userdata('level'), ['SPVU']) ? 'readonly' : '' ?>><?= $maintenanceAct['root_cause'] ?></textarea>
 					<div class="invalid-feedback">
 						<?= form_error('root_cause'); ?>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="mb-1 font-weight-bold">Temporary Action <span class="text-danger small">*Required</span></label>
-					<textarea id="temp_act" class="form-control <?= (form_error('temp_act') ? 'is-invalid' : '') ?>" name="temp_act" readonly><?= $maintenanceAct['temp_act'] ?></textarea>
+					<label class="mb-1 font-weight-bold">Temporary Action <span class="text-danger small"></span></label>
+					<textarea id="temp_act" class="form-control <?= (form_error('temp_act') ? 'is-invalid' : '') ?>" name="temp_act" <?= !in_array($this->session->userdata('level'), ['SPVU']) ? 'readonly' : '' ?>><?= $maintenanceAct['temp_act'] ?></textarea>
 					<div class="invalid-feedback">
 						<?= form_error('temp_act'); ?>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="mb-1 font-weight-bold">Preventive Action <span class="text-danger small">*Required</span></label>
-					<textarea id="prev_act" class="form-control <?= (form_error('prev_act') ? 'is-invalid' : '') ?>" name="prev_act" readonly><?= $maintenanceAct['prev_act'] ?></textarea>
+					<label class="mb-1 font-weight-bold">Preventive Action <span class="text-danger small"></span></label>
+					<textarea id="prev_act" class="form-control <?= (form_error('prev_act') ? 'is-invalid' : '') ?>" name="prev_act" <?= !in_array($this->session->userdata('level'), ['SPVU']) ? 'readonly' : '' ?>><?= $maintenanceAct['prev_act'] ?></textarea>
 					<div class="invalid-feedback">
 						<?= form_error('prev_act'); ?>
 					</div>
 				</div>
 
-				<div class="form-group">
-					<label class="mb-1 font-weight-bold">Remark</label>
-					<textarea name="approver_message" placeholder="" class="form-control <?= (form_error('approver_message') ? "is-invalid" : "") ?>" rows="2"><?= set_value('approver_message'); ?></textarea>
-					<div class="invalid-feedback">
-						<?= form_error('approver_message'); ?>
+				<?php 
+					$userLevel = $this->session->userdata('level');
+					$mgrNoteValue = isset($maintenanceAct['mgr_note']) ? $maintenanceAct['mgr_note'] : '';
+					if ($userLevel === 'MGR' || !empty($mgrNoteValue)): 
+				?>
+					<div class="form-group">
+						<label class="mb-1 font-weight-bold">
+							<i class="fas fa-sticky-note"></i> Note 
+							<?php if ($userLevel === 'MGR'): ?>
+								<span class="text-danger small"></span>
+							<?php endif; ?>
+						</label>
+
+						<textarea id="mgr_note" 
+							class="form-control <?= (form_error('mgr_note') ? 'is-invalid' : '') ?>" 
+							name="mgr_note"
+							<?= ($userLevel !== 'MGR') ? 'readonly' : '' ?>><?= $mgrNoteValue ?></textarea>
+
+						<div class="invalid-feedback">
+							<?= form_error('mgr_note'); ?>
+						</div>
 					</div>
-				</div>
+				<?php endif; ?>
+
 				</br>
 				<button type="submit" name="action" value="confirm" class="btn btn-success btn-lg mr-2">
 					<i class="fas fa-check"></i>
 					Confirm
 				</button>
-				<button type="submit" name="action" value="return" class="btn btn-info btn-lg mr-2">
+				<!-- <button type="submit" name="action" value="return" class="btn btn-info btn-lg mr-2">
 					<i class="fas fa-reply"></i>
 					Return
-				</button>
+				</button> -->
 
 			</form>
 		</div>
