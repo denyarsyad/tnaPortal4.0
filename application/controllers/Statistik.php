@@ -367,8 +367,9 @@ class Statistik extends CI_Controller
 											 wom.machine_id, wom.machine_name, wom.req_message,
 											 CASE wom.status
 										 		  WHEN 0 THEN 'Submited' WHEN 1 THEN 'Pending'
-										 		  WHEN 2 THEN 'Done' WHEN 5 THEN 'Finished'
-												  WHEN 6 THEN 'Checked' WHEN 7 THEN 'Change Machine'
+										 		  WHEN 2 THEN 'Done' WHEN 3 THEN 'Confirmed' 
+												  WHEN 5 THEN 'Finished' WHEN 6 THEN 'Checked' 
+												  WHEN 7 THEN 'Change Machine'
 												  ELSE wom.status 
 											END AS status_label,
 											IFNULL(TIMEDIFF(wom.checker_time, wom.req_time), '00:00:00') AS response_time,
