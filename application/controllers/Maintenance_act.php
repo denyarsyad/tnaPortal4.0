@@ -179,6 +179,15 @@ public function actCheck($id)
 
     public function submit($id)
 	{
+		$mtc_id2 = $this->input->post('mtc_id2');
+		$mtc_name2 = $this->input->post('mtc_name2');
+
+		if (!empty($mtc_id2) && empty($mtc_name2)) {
+			$this->session->set_flashdata('error', 'Tolong NIKnya tekan enter agar nama teknisi muncul.');
+			redirect('maintenance_act/index');
+			return; 
+		}
+
 		$note = $this->input->post('note');
 		if ($note == 'Y') {
 			redirect('maintenance_act/actDone/'.$id);
@@ -947,6 +956,24 @@ public function actCheck($id)
 			redirect('maintenance_act/index');
 		}
 	}
+
+	//2026.04.24
+	public function getNameById()
+    {
+        $mtc_id = $this->input->post('mtc_id2');
+        $name = $this->model->getNameById($mtc_id);
+
+        if ($name) {
+            echo json_encode([
+                'success' => true,
+                'data' => [
+                    'mtc_name' => $name->mtc_name
+                ]
+            ]);
+        } else {
+            echo json_encode(['success' => false]);
+        }
+    }
 
 
 }

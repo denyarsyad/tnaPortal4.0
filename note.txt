@@ -6,3 +6,7 @@ composer update --ignore-platform-reqs --no-audit
 ALTER TABLE helpdesk.work_order_management ADD repair_id varchar(100) NULL;
 ALTER TABLE helpdesk.work_order_management ADD repair_name varchar(100) NULL;
 ALTER TABLE helpdesk.work_order_management ADD repair_time DATETIME NULL;
+
+--2026.04.24
+ALTER TABLE helpdesk.work_order_management ADD mtc_id2 varchar(100) NULL;
+ALTER TABLE helpdesk.work_order_management ADD mtc_name2 varchar(100) NULL;

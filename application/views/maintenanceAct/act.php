@@ -89,6 +89,46 @@
 		}
 	});
 
+
+	//2026.04.24
+	$(document).ready(function () {
+
+		// Tekan Enter di input NIK
+		$("#mtc_id2").on("keypress", function(e) {
+			if (e.which == 13) { // 13 = Enter
+				e.preventDefault();
+				checkNIK();
+			}
+		});
+
+		function checkNIK() {
+			let mtcID2 = $("#mtc_id2").val();
+
+			if (mtcID2.trim() === "") return;
+
+			$.ajax({
+				url: "<?= base_url('maintenance_act/getNameById'); ?>",
+				type: "POST",
+				data: { mtc_id2: mtcID2 },
+				dataType: "json",
+				success: function(res) {
+
+					if (res.success) {
+						$("#mtc_name2").val(res.data.mtc_name);
+						//alert(res.data.mtc_name);
+					} else {
+						$("#mtc_name2").val("");
+						alert("NIK tidak ditemukan!");
+					}
+				},
+				error: function() {
+					alert("Terjadi kesalahan saat mengambil data.");
+				}
+			});
+		}
+
+	});
+
 </script>
 
 <div class="container-fluid">
@@ -210,6 +250,27 @@
 						<?php } ?>	
 					</div>
 				</div>
+
+				<div class="row">
+					<div class="col-sm-4" >
+						<div class="form-group">
+							<label class="mb-1 font-weight-bold">NIK Teknisi 2<span class="text-info small"> *Optional</span></label>
+							<input type="text" id="mtc_id2" autofocus class="form-control <?= (form_error('mtc_id2') ? 'is-invalid' : '') ?>" name="mtc_id2" value="<?= set_value('mtc_id2'); ?>">
+							<div class="invalid-feedback">
+								<?= form_error('mtc_id2'); ?>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-8" >
+						<div class="form-group">
+							<label class="mb-1 font-weight-bold">Nama Teknisi 2</label>
+							<input type="text" id="mtc_name2" class="form-control <?= (form_error('mtc_name2') ? 'is-invalid' : '') ?>" name="mtc_name2" value="<?= set_value('mtc_name2'); ?>" readonly>
+							<div class="invalid-feedback">
+								<?= form_error('mtc_name2'); ?>
+							</div>
+						</div>
+					</div>
+				</div>	
 
 				<div class="row mb-3 align-items-center">
 					<div class="col-md-6">

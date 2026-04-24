@@ -4430,6 +4430,18 @@ public function approveIncidentMgr($id)
       return $query->row();
   }
 
+  //2026.04.24
+   public function getNameById($mtc_id)
+  {
+      $query = $this->db->query("
+          SELECT p.nama AS mtc_name
+          FROM pegawai p 
+          WHERE p.nik = '$mtc_id'
+      ");
+
+      return $query->row();
+  }
+
   public function getIdWo($id)
   {
     $id_wo = "WOM-" . date("YmdHis") . "-" . $id;
