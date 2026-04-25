@@ -190,23 +190,23 @@ public function actCheck($id)
 
 		$note = $this->input->post('note');
 		if ($note == 'Y') {
-			redirect('maintenance_act/actDone/'.$id);
+			redirect('maintenance_act/actDone/'.$id. '/' . $mtc_id2. '/'. $mtc_name2);
 		} 
 		else if ($note == 'N') {
-			redirect('maintenance_act/actDoneWS/'.$id);
+			redirect('maintenance_act/actDoneWS/'.$id. '/' . $mtc_id2. '/'. $mtc_name2);
 		} 
 		else if ($note == 'P') {
-			redirect('maintenance_act/actPending/'.$id);
+			redirect('maintenance_act/actPending/'.$id. '/' . $mtc_id2. '/'. $mtc_name2);
 		} 
 		else if ($note == 'C') {
-			redirect('maintenance_act/actChanged/'.$id);
+			redirect('maintenance_act/actChanged/'.$id. '/' . $mtc_id2. '/'. $mtc_name2);
 		}
 		else {
 			echo "Kamu gak pilih combo";
 		}
 	}
 
-	public function actDone($id)
+	public function actDone($id, $mtcID, $mtcName)
 	{
 		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 		if (in_array($this->session->userdata('level'), $level)) {
@@ -226,6 +226,10 @@ public function actCheck($id)
 			// boleh beri indikator bahwa ini status DONE
 			$data['status'] = "done";  
 			$data['error'] = "";
+			
+			//2026.04.25
+			$data['mtcID']   = $mtcID;
+    		$data['mtcName'] = $mtcName;
 
 			// load template
 			$this->load->view('template', $data);
@@ -374,7 +378,7 @@ public function actCheck($id)
 		}
 	}
 
-	public function done()
+	public function done($mtcID, $mtcName)
 	{
 		$this->form_validation->set_rules(
 			'root_cause',
@@ -442,6 +446,8 @@ public function actCheck($id)
 				'root_cause'    => $this->input->post('root_cause'),
 				'temp_act'   	 => $this->input->post('temp_act'),
 				'prev_act'   	 => $this->input->post('prev_act'),
+				'mtc_id2'		=> $mtcID,
+				'mtc_name2'		=> urldecode($mtcName),
 				'sound_yn'		 => "Y",
 				'status'        => "2" //REPAIRED OR DONE
 			);
