@@ -238,7 +238,7 @@ public function actCheck($id)
 		}
 	}
 
-	public function actDoneWS($id)
+	public function actDoneWS($id, $mtcID, $mtcName)
 	{
 		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 		if (in_array($this->session->userdata('level'), $level)) {
@@ -259,6 +259,10 @@ public function actCheck($id)
 			$data['status'] = "done";  
 			$data['error'] = "";
 
+			//2026.04.25
+			$data['mtcID']   = $mtcID;
+    		$data['mtcName'] = $mtcName;
+
 			// load template
 			$this->load->view('template', $data);
 		} else {
@@ -266,7 +270,7 @@ public function actCheck($id)
 		}
 	}
 
-	public function actPending($id)
+	public function actPending($id, $mtcID, $mtcName)
 	{
 		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 		if (in_array($this->session->userdata('level'), $level)) {
@@ -286,6 +290,10 @@ public function actCheck($id)
 			// boleh beri indikator bahwa ini status DONE
 			$data['status'] = "done";  
 			$data['error'] = "";
+
+			//2026.04.25
+			$data['mtcID']   = $mtcID;
+    		$data['mtcName'] = $mtcName;
 
 			// load template
 			$this->load->view('template', $data);
@@ -534,6 +542,8 @@ public function actCheck($id)
 				'root_cause'    => $this->input->post('root_cause'),
 				'temp_act'   	 => $this->input->post('temp_act'),
 				'prev_act'   	 => $this->input->post('prev_act'),
+				'mtc_id2'		=> $mtcID,
+				'mtc_name2'		=> urldecode($mtcName),
 				'sound_yn'		 => "Y",
 				'status'        => "2" //REPAIRED OR DONE
 			);
@@ -617,6 +627,8 @@ public function actCheck($id)
 				'root_cause'    	=> $this->input->post('root_cause'),
 				'temp_act'   	 	=> $this->input->post('temp_act'),
 				'prev_act'   	 	=> $this->input->post('prev_act'),
+				'mtc_id2'			=> $mtcID,
+				'mtc_name2'			=> urldecode($mtcName),
 				'sound_yn'		 	=> "Y",
 				'status'        	=> "1" //PENDING
 			);
@@ -685,7 +697,7 @@ public function actCheck($id)
 		
 	}
 
-	public function actChanged($id)
+	public function actChanged($id, $mtcID, $mtcName)
 	{
 		$level = ["Admin", "Technician", "User", "SPV", "MGR", "SPVU", "SPVM", "MGRD"];
 		if (in_array($this->session->userdata('level'), $level)) {
@@ -705,6 +717,10 @@ public function actCheck($id)
 			// boleh beri indikator bahwa ini status DONE
 			$data['status'] = "done";  
 			$data['error'] = "";
+
+			//2026.04.25
+			$data['mtcID']   = $mtcID;
+    		$data['mtcName'] = $mtcName;
 
 			// load template
 			$this->load->view('template', $data);
@@ -787,6 +803,8 @@ public function actCheck($id)
 				'mtc_name' 		 => $user_name,
 				'mtc_time'  	 => date("Y-m-d H:i:s"),
 				'change_mc'   	 => $this->input->post('machine_idScan'),
+				'mtc_id2'			=> $mtcID,
+				'mtc_name2'			=> urldecode($mtcName),
 				'sound_yn'		 => "Y",
 				'status'         => "7" //Changed machine
 			);

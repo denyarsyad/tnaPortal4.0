@@ -171,7 +171,7 @@
 			<h6 class="m-0 font-weight-bold text-primary">Form Respone Downtime</h6>
 		</div>
 		<div class="card-body">
-			<form method="post" action="<?= site_url('maintenance_act/doneChanged') ?>" enctype="multipart/form-data">
+			<form method="post" action="<?= site_url('maintenance_act/doneChanged/'.$mtcID.'/'.$mtcName) ?>" enctype="multipart/form-data">
 
 				<input class="form-control" name="nama" value="<?= $profile['nama'] ?>" hidden>
 				<input class="form-control" name="email" value="<?= $profile['email'] ?>" hidden>
