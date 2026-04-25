@@ -362,6 +362,7 @@ class Statistik extends CI_Controller
 			$data = $this->db->query("SELECT wom.wo_id, 
 											 wom.checker_name,
 											 wom.mtc_name,
+											 wom.mtc_name2,
 											 wom.req_name,
 											 DATE_FORMAT(wom.req_time, '%Y-%m-%d %H:%i:%s') AS req_time,
 											 wom.machine_id, wom.machine_name, wom.req_message,
@@ -383,7 +384,7 @@ class Statistik extends CI_Controller
 									FROM work_order_management wom
 									WHERE DATE(wom.req_time) BETWEEN ? AND ?
 									ORDER BY wom.req_time DESC", [$tgl1, $tgl2])->result_array();
-			$headers = ['ID', 'PIC MTC 1', 'PIC MTC 2', 'PIC PRODUKSI', 'WO DATE', 'MACHINE ID', 'MACHINE NAME', 'REQ MESSAGE', 'STATUS', 'RESPONSE', 'DOWN', 'WAKTU CLOSE', 'WAKTU REPAIR', 'ROOT CAUSE', 'TEMPORARY ACTION', 'PREVENTIVE ACTION', 'SPARE PART'];
+			$headers = ['ID', 'CHECKER', 'PIC MTC 1', 'PIC MTC 2', 'PIC PRODUKSI', 'WO DATE', 'MACHINE ID', 'MACHINE NAME', 'REQ MESSAGE', 'STATUS', 'RESPONSE', 'DOWN', 'WAKTU CLOSE', 'WAKTU REPAIR', 'ROOT CAUSE', 'TEMPORARY ACTION', 'PREVENTIVE ACTION', 'SPARE PART'];
 		}
 
 		if (empty($data)) {
